@@ -5,23 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe</title>
     <link rel="stylesheet" href="style.css">
-
-
-
     <script src="app.js" defer></script>
 </head>
 
 <body>
-    <div id="title">
-        <h1>Tic Tac Toe</h1>
-        <span id="result"></span>
-        
-    </div>
-    <button class="btn start">Start The Game</button>
-    <button class="btn restart">Restart</button>
-   
-    <div class="container">
+    <header id="header">
+        <div id="headContent">
+            <h1>Tic Tac Toe</h1>
 
+            <div class="buttons">
+                <button class="btn start">Start</button>
+                <button class="btn restart">Restart</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <span id="result"></span>
         <div id="gameBoard">
 
             <div class="spot" id="11"></div>
@@ -37,13 +37,6 @@
         </div>
 
     </div>
-
-    <!-- <div class="gameSet">
-    <h2>Player O</h2>
-    <label for="nameP1">Name:</label>
-    <input type="text" name="name" id="nameP1">
-    <button class="btn">confirm</button>
-</div> -->
 </body>
 
 </html>

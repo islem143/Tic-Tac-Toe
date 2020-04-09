@@ -65,6 +65,7 @@ const GameControl = (() => {
   const resetPlayerState = () => {
     p1.isPlaying = false;
     p2.isPlaying = false;
+    GameState.thereIsAwinner = false;
   };
   const resetBoardState = () => {
     GameBoard.gameBoard = [
@@ -75,7 +76,7 @@ const GameControl = (() => {
     GameBoard.spots.forEach((e) => {
       e.textContent = "";
     });
-    GameBoard.resultText.textContent = "Tic Tac Toe";
+    GameBoard.resultText.textContent = "";
   };
   const resetGameState = () => {
     GameState.gameIsFinished = false;
@@ -92,8 +93,7 @@ const GameControl = (() => {
 
 /*Player prop and methods */
 
-const Player = (pName, pMark) => {
-  const name = pName;
+const Player = (pMark) => {
   const mark = pMark;
   const isPlaying = false;
   const add = (e) => {
@@ -119,10 +119,11 @@ const Player = (pName, pMark) => {
 
 GameResult = (() => {
   const displayResultText = () => {
-    if (p1.isPlaying) GameBoard.resultText.textContent = `${p1.name} wins`;
-    else GameBoard.resultText.textContent = `${p2.name} wins`;
+    if (!GameState.thereIsAwinner) GameBoard.resultText.textContent = `Tie`;
+    else if (p1.isPlaying) GameBoard.resultText.textContent = `${p1.mark} wins`;
+    else GameBoard.resultText.textContent = `${p2.mark} wins`;
   };
-  const equility = (a, b, c) => {
+  const equality = (a, b, c) => {
     if ((a == "") | (b == "") | (c == "")) return false;
     else if (a == "x" && b == "x" && c == "x") {
       return true;
@@ -133,9 +134,9 @@ GameResult = (() => {
     }
   };
   const gameBoardIsFilled = () => {
-    for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 3; j++) {
-        if (GameBoard.gameBoard[i][j] == "") return false;
+    for (let i = 0; i < 9; i++) {
+      if (GameBoard.spots[i].textContent == "") {
+        return false;
       }
     }
     return true;
@@ -144,36 +145,37 @@ GameResult = (() => {
   const checkResult = () => {
     let board = GameBoard.gameBoard;
     for (let i = 0; i < 3; i++) {
-      if (equility(board[i][0], board[i][1], board[i][2])) {
-        displayResultText();
+      if (equality(board[i][0], board[i][1], board[i][2])) {
         GameState.gameIsFinished = true;
+        GameState.thereIsAwinner = true;
+        displayResultText();
       }
     }
     for (let j = 0; j < 3; j++) {
-      if (equility(board[0][j], board[1][j], board[2][j])) {
-        displayResultText();
+      if (equality(board[0][j], board[1][j], board[2][j])) {
         GameState.gameIsFinished = true;
         GameState.thereIsAwinner = true;
+        displayResultText();
       }
     }
-    if (equility(board[0][0], board[1][1], board[2][2])) {
-      displayResultText();
+    if (equality(board[0][0], board[1][1], board[2][2])) {
       GameState.thereIsAwinner = true;
       GameState.gameIsFinished = true;
+      displayResultText();
     }
-    if (equility(board[0][2], board[1][1], board[2][0])) {
-      displayResultText();
+    if (equality(board[0][2], board[1][1], board[2][0])) {
       GameState.thereIsAwinner = true;
       GameState.gameIsFinished = true;
+      displayResultText();
     }
 
-    if (gameBoardIsFilled() && !GameState.thereIsAwinner) console.log("tie");
+    if (gameBoardIsFilled() && !GameState.thereIsAwinner) displayResultText();
   };
-  return { checkResult, equility, gameBoardIsFilled };
+  return { checkResult, equality, gameBoardIsFilled };
 })();
 
 // start here //
-let p1 = Player("islem", "x");
-let p2 = Player("ahmed", "o");
+let p1 = Player("x");
+let p2 = Player("o");
 GameButtons.addEventTostartButton();
 GameButtons.addEventTorestartButton();

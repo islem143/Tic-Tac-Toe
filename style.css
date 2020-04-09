@@ -1,79 +1,43 @@
-@import url('https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap");
 body {
-  
-  
-  font-family: 'Comic Neue', cursive;
+  font-family: "Comic Neue", cursive;
   background-color: rgb(117, 117, 247);
   display: flex;
   flex-direction: column;
+  margin: 0;
+  overflow: hidden;
 }
-#title
-{
-  font-size: 28px;
-  text-align: center;
-  margin-bottom: 80px;
 
+#header {
+  position: fixed;
+  height: 100px;
+  background-color: #eb4559;
+  padding: 0.3rem;
+  box-shadow: 2px 2px 2px rgb(216, 216, 216);
+  overflow: hidden;
+  width: 100%;
 }
-#title h1{
-  margin: 10px 0 0 0 ;
-}
-.container{
-display: flex;
-justify-content: center;
- 
-}
-#gameBoard {
-  width: 600px;
-  height:600px;
-   /* border: 3px solid #000;  */
+#headContent {
   display: grid;
-  grid-template-columns: 33.33% 33.33% 33.33%;
-  grid-template-rows:33.33% 33.33% 33.33% ;
-  background-color:#ddd ;
-
-}
-.spot {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 3px solid #000;
-  font-size: 120px;
-  
-}
-.spot:hover{
-  background-color: rgb(165, 164, 164);
-  cursor: default;
-}
-.gameSet{
-  display: flex;
-  flex-direction: column;
-  font-size: 20px;
-  font-family:Georgia, 'Times New Roman', Times, serif, 'Arial Narrow', Arial, sans-serif
-
-}
-.gameSet >input{
-margin-top: 10px;
-padding: 0.6rem;
-outline: none;
-border-radius: 3px;
-border: none;
-font-size: 22px;
+  grid-template-columns: auto auto;
+  justify-items: center;
+  margin: 30px;
+  width: 100%;
+  padding: 0.2rem;
 }
 .btn {
   background-color: #ffffff;
   border: none;
   outline: none;
   width: 130px;
-  transition: transform 40ms ease-in;
-  font-size: 18px;
+  transition: transform 40ms, opacity 0.5s, visibility 0.3s ease-in;
   padding: 0.2rem;
   outline: none;
-  transition: transform 40ms ease-in;
-  font-size: 18px;
   height: 45px;
   border-radius: 5px;
-  margin:  10px 0 0 0;
-
+  margin-right: 30px;
+  font-weight: 500;
+  font-size: 20px;
 }
 .btn:hover {
   background-color: #aeefec;
@@ -81,27 +45,95 @@ font-size: 22px;
 .btn:active {
   transform: scale(0.97);
 }
-.btn i {
-  margin-right: 5px;
+.btn.visibility {
+  visibility: hidden;
+  opacity: 0;
 }
-@media screen and (max-width:1600px){
-  #gameBoard{
-    width: 420px;
-    height:420px;
-    border: 3px solid #000;
-    display: grid;
-    grid-template-columns: 33.33% 33.33% 33.33%;
-    grid-template-rows:33.33% 33.33% 33.33% ;
-    background-color:#ddd ;
-  }
-  #title
-{
-  margin-bottom: 40px;
+#headContent h1 {
+  font-size: 50px;
+  margin: 0;
 }
- 
+.container {
+  margin-top: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container span {
+  font-size: 50px;
+  margin-bottom: 20px;
+  text-transform: capitalize;
+}
+#gameBoard {
+  display: block;
+  width: 600px;
+  height: 600px;
+  display: grid;
+  grid-template-columns: 33.33% 33.33% 33.33%;
+  grid-template-rows: 33.33% 33.33% 33.33%;
+  background-color: #aeefec;
+}
+.spot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #000;
+  font-size: 128px;
+}
+.spot:hover {
+  background-color: rgb(225, 245, 244);
+  cursor: default;
 }
 
-.visibility{
-  display: none;
-  
+@media screen and (max-width: 1440px) {
+  #gameBoard {
+    width: 350px;
+    height: 350px;
+  }
+  #headContent h1 {
+    font-size: 40px;
+  }
+  .btn {
+    width: 110px;
+    height: 35px;
+  }
+  .container span {
+    font-size: 35px;
+    margin-bottom: 12px;
+    text-transform: capitalize;
+  }
+}
+
+@media screen and (max-width: 770px) {
+  #gameBoard {
+    width: 300px;
+    height: 300px;
+  }
+  #headContent {
+    margin-top: 10px;
+    margin: 30px 0 0 0;
+  }
+  #headContent .btn {
+    height: 35px;
+    width: 100px;
+    margin-right: 20px;
+  }
+}
+@media screen and (max-width: 450px) {
+  #gameBoard {
+    width: 280px;
+    height: 280px;
+  }
+  #headContent {
+    margin: 10px 0 0 5px;
+  }
+  #headContent .buttons {
+    display: flex;
+    flex-direction: column;
+  }
+  #headContent .btn {
+    height: 32px;
+    width: 77px;
+    margin: 5px 20px 0 0;
+  }
 }
