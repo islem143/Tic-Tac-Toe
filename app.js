@@ -1,3 +1,5 @@
+/*GameBorad prop and methods */
+
 const GameBoard = (() => {
   const gameBoard = [
     ["", "", ""],
@@ -6,15 +8,19 @@ const GameBoard = (() => {
   ];
   const container = document.querySelector("#gameBoard");
   const spots = document.querySelectorAll(".spot");
-  const title = document.querySelector("#title");
-  return { gameBoard, container, spots, title };
+  const resultText = document.querySelector("#result");
+  return { gameBoard, container, spots, resultText };
 })();
+/*GameState prop and methods */
+
 const GameState = (() => {
   let gameIsFinished = false;
   let thereIsAwinner = false;
 
   return { gameIsFinished, thereIsAwinner };
 })();
+/*Gamebuttons prop and methods */
+
 const GameButtons = (() => {
   const startBtn = document.querySelector(".start");
   const restartBtn = document.querySelector(".restart");
@@ -36,8 +42,8 @@ const GameButtons = (() => {
     restartBtn,
   };
 })();
-GameButtons.addEventTostartButton();
-GameButtons.addEventTorestartButton();
+
+/*GameControlprop and methods */
 
 const GameControl = (() => {
   const changeRole = () => {
@@ -69,7 +75,7 @@ const GameControl = (() => {
     GameBoard.spots.forEach((e) => {
       e.textContent = "";
     });
-    GameBoard.title.textContent = "Tic Tac Toe";
+    GameBoard.resultText.textContent = "Tic Tac Toe";
   };
   const resetGameState = () => {
     GameState.gameIsFinished = false;
@@ -83,6 +89,8 @@ const GameControl = (() => {
   };
   return { changeRole, giveControlTo, restartGame, removeClickEvent };
 })();
+
+/*Player prop and methods */
 
 const Player = (pName, pMark) => {
   const name = pName;
@@ -107,11 +115,12 @@ const Player = (pName, pMark) => {
 
   return { addMarkHandler, add, name, isPlaying, mark };
 };
+/*Gameresult prop and methods */
 
 GameResult = (() => {
   const displayResultText = () => {
-    if (p1.isPlaying) GameBoard.title.textContent = `${p1.name} wins`;
-    else GameBoard.title.textContent = `${p2.name} wins`;
+    if (p1.isPlaying) GameBoard.resultText.textContent = `${p1.name} wins`;
+    else GameBoard.resultText.textContent = `${p2.name} wins`;
   };
   const equility = (a, b, c) => {
     if ((a == "") | (b == "") | (c == "")) return false;
@@ -134,7 +143,6 @@ GameResult = (() => {
 
   const checkResult = () => {
     let board = GameBoard.gameBoard;
-
     for (let i = 0; i < 3; i++) {
       if (equility(board[i][0], board[i][1], board[i][2])) {
         displayResultText();
@@ -164,6 +172,8 @@ GameResult = (() => {
   return { checkResult, equility, gameBoardIsFilled };
 })();
 
-//Declaration
+// start here //
 let p1 = Player("islem", "x");
 let p2 = Player("ahmed", "o");
+GameButtons.addEventTostartButton();
+GameButtons.addEventTorestartButton();
