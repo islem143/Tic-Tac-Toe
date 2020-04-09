@@ -11,28 +11,56 @@ const GameBoard = (() => {
 })();
 const GameState = (() => {
   let gameIsFinished = false;
+  let thereIsAwinner = false;
 
-  return { gameIsFinished };
+  return { gameIsFinished, thereIsAwinner };
 })();
+const GameButtons = (() => {
+  const startBtn = document.querySelector(".start");
+  const restartBtn = document.querySelector(".restart");
+  const addEventTostartButton = () => {
+    startBtn.addEventListener("click", () => {
+      GameControl.giveControlTo(p1);
+      startBtn.classList.toggle("visibility");
+    });
+  };
+  const addEventTorestartButton = () => {
+    restartBtn.addEventListener("click", () => {
+      GameControl.restartGame();
+    });
+  };
+  return {
+    addEventTostartButton,
+    addEventTorestartButton,
+    startBtn,
+    restartBtn,
+  };
+})();
+GameButtons.addEventTostartButton();
+GameButtons.addEventTorestartButton();
 
 const GameControl = (() => {
   const changeRole = () => {
     if (p1.isPlaying == true) {
       p1.isPlaying = false;
-      Play(p2);
+      giveControlTo(p2);
     } else {
       p2.isPlaying = false;
-      Play(p1);
+      giveControlTo(p1);
     }
   };
-  const Play = (p) => {
+  const giveControlTo = (p) => {
     p.addMarkHandler(p);
   };
-  const removeEvent = () => {
-    if (p1.isPlaying) GameBoard.container.removeEventListener("click", p1.add);
-    else GameBoard.container.removeEventListener("click", p2.add);
+  const removeClickEvent = () => {
+    GameBoard.container.removeEventListener("click", p1.add);
+    GameBoard.container.removeEventListener("click", p2.add);
   };
-  const restartGame = () => {
+  const resetPlayerState = () => {
+    p1.isPlaying = false;
+    p2.isPlaying = false;
+  };
+  const resetBoardState = () => {
     GameBoard.gameBoard = [
       ["", "", ""],
       ["", "", ""],
@@ -41,19 +69,25 @@ const GameControl = (() => {
     GameBoard.spots.forEach((e) => {
       e.textContent = "";
     });
-    p1.isPlaying = false;
-    p2.isPlaying = false;
-    GameState.gameIsFinished = false;
     GameBoard.title.textContent = "Tic Tac Toe";
-    startBtn.classList.remove("visibility");
-    removeEvent();
   };
-  return { changeRole, Play, restartGame, removeEvent };
+  const resetGameState = () => {
+    GameState.gameIsFinished = false;
+  };
+  const restartGame = () => {
+    resetBoardState();
+    resetPlayerState();
+    resetGameState();
+    removeClickEvent();
+    GameButtons.startBtn.classList.remove("visibility");
+  };
+  return { changeRole, giveControlTo, restartGame, removeClickEvent };
 })();
 
 const Player = (pName, pMark) => {
-  const mark = pMark;
   const name = pName;
+  const mark = pMark;
+  const isPlaying = false;
   const add = (e) => {
     if (e.target.textContent == "") {
       let id;
@@ -70,14 +104,14 @@ const Player = (pName, pMark) => {
     p.isPlaying = true;
     GameBoard.container.addEventListener("click", add);
   };
-  const isPlaying = false;
-  return { name, addMarkHandler, isPlaying, mark, add };
+
+  return { addMarkHandler, add, name, isPlaying, mark };
 };
 
 GameResult = (() => {
   const displayResultText = () => {
-    if (p1.isPlaying) GameBoard.title.textContent = `${p1.mark} wins`;
-    else GameBoard.title.textContent = `${p2.mark} wins`;
+    if (p1.isPlaying) GameBoard.title.textContent = `${p1.name} wins`;
+    else GameBoard.title.textContent = `${p2.name} wins`;
   };
   const equility = (a, b, c) => {
     if ((a == "") | (b == "") | (c == "")) return false;
@@ -89,48 +123,47 @@ GameResult = (() => {
       return false;
     }
   };
+  const gameBoardIsFilled = () => {
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if (GameBoard.gameBoard[i][j] == "") return false;
+      }
+    }
+    return true;
+  };
+
   const checkResult = () => {
     let board = GameBoard.gameBoard;
-    console.log(board);
 
     for (let i = 0; i < 3; i++) {
       if (equility(board[i][0], board[i][1], board[i][2])) {
         displayResultText();
-
         GameState.gameIsFinished = true;
       }
     }
     for (let j = 0; j < 3; j++) {
       if (equility(board[0][j], board[1][j], board[2][j])) {
         displayResultText();
-
         GameState.gameIsFinished = true;
+        GameState.thereIsAwinner = true;
       }
     }
     if (equility(board[0][0], board[1][1], board[2][2])) {
       displayResultText();
-
+      GameState.thereIsAwinner = true;
       GameState.gameIsFinished = true;
     }
     if (equility(board[0][2], board[1][1], board[2][0])) {
       displayResultText();
-
+      GameState.thereIsAwinner = true;
       GameState.gameIsFinished = true;
     }
+
+    if (gameBoardIsFilled() && !GameState.thereIsAwinner) console.log("tie");
   };
-  return { checkResult, equility };
+  return { checkResult, equility, gameBoardIsFilled };
 })();
 
 //Declaration
 let p1 = Player("islem", "x");
 let p2 = Player("ahmed", "o");
-startBtn = document.querySelector(".start");
-startBtn.addEventListener("click", () => {
-  GameControl.Play(p1);
-  startBtn.classList.toggle("visibility");
-});
-
-restartBtn = document.querySelector(".restart");
-restartBtn.addEventListener("click", () => {
-  GameControl.restartGame();
-});

@@ -85,7 +85,6 @@ font-size: 22px;
   margin-right: 5px;
 }
 @media screen and (max-width:1600px){
-
   #gameBoard{
     width: 420px;
     height:420px;
@@ -97,14 +96,9 @@ font-size: 22px;
   }
   #title
 {
-
   margin-bottom: 40px;
-
 }
  
-
-
-
 }
 
 .visibility{
